@@ -1,17 +1,23 @@
 <?php
 /**
- * Plugin Name: Freshet Pages Plus
- * Description: Fixes the WP Admin list-table gripes: a sortable "Modified" column (with ID and author), the full URL path under every title, a parent filter + sortable Parent column for hierarchical content, a template column + filter, slug/path search, and one-click + bulk Duplicate.
- * Author: Freshet Studio
- * Author URI: https://freshet.studio
- * Plugin URI: https://github.com/kristoffbertram/freshet-pagesplus
- * Version: 1.5.0
- * License: MIT
- * License URI: https://opensource.org/licenses/MIT
- * Text Domain: freshet-pagesplus
+ * Plugin Name:       Freshet Pages Plus
+ * Plugin URI:        https://freshet.studio
+ * Description:       Fixes the WP Admin list-table gripes: a sortable "Modified" column (with ID and author), the full URL path under every title, a parent filter + sortable Parent column for hierarchical content, a template column + filter, slug/path search, and one-click + bulk Duplicate.
+ * Version:           1.5.0
+ * Requires at least: 6.0
+ * Requires PHP:      7.4
+ * Author:            Freshet Studio
+ * Author URI:        https://freshet.studio
+ * License:           MIT
+ * License URI:       https://opensource.org/licenses/MIT
+ * Text Domain:       freshet-pagesplus
  */
 
 defined('ABSPATH') || exit;
+
+// Single version source; keep in sync with the header + readme stable tag
+// (portfolio convention, same as freshet-editjump / freshet-uploadmax).
+define('FRESHET_PAGESPLUS_VERSION', '1.5.0');
 
 const FRESHET_PAGESPLUS_COL_MODIFIED = 'freshet_pagesplus_modified';
 const FRESHET_PAGESPLUS_COL_PARENT   = 'freshet_pagesplus_parent';
