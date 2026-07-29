@@ -27,6 +27,9 @@ const FRESHET_PAGESPLUS_TOP_VALUE    = 'top'; // parent-filter sentinel: top lev
 const FRESHET_PAGESPLUS_DUP_ACTION   = 'freshet_pagesplus_duplicate';
 const FRESHET_PAGESPLUS_COL_TEMPLATE = 'freshet_pagesplus_template';
 const FRESHET_PAGESPLUS_TEMPLATE_QV  = 'freshet_pagesplus_template';
+// Shared handle for the (src-less) style + script registrations the inline CSS
+// and the path payload hang off. No build step, so there is no file to point at.
+const FRESHET_PAGESPLUS_HANDLE       = 'freshet-pagesplus';
 
 /**
  * Post types we touch: anything public with an admin UI, minus attachments
@@ -105,7 +108,7 @@ add_action('load-edit.php', function () {
 	add_filter("bulk_actions-edit-{$pt}", 'freshet_pagesplus_register_bulk_duplicate');
 	add_filter("handle_bulk_actions-edit-{$pt}", 'freshet_pagesplus_handle_bulk_duplicate', 10, 3);
 	add_action('admin_notices', 'freshet_pagesplus_bulk_notice');
-	add_action('admin_head', 'freshet_pagesplus_styles');
+	add_action('admin_enqueue_scripts', 'freshet_pagesplus_enqueue_assets');
 	add_action('admin_footer', 'freshet_pagesplus_print_paths');
 });
 
@@ -467,9 +470,10 @@ function freshet_pagesplus_print_paths(): void {
 	}
 	// JSON_HEX_TAG/AMP: slugs may carry percent-encoded octets (sanitize_title
 	// preserves them) and the paths are urldecoded, so keep <, > and & out of
-	// the inline <script> rather than relying on PHP's default \/ escaping.
-	echo '<script>window.freshetPagesplusPaths=' . wp_json_encode($paths, JSON_HEX_TAG | JSON_HEX_AMP) . ';';
-	echo <<<'JS'
+	// the inline script rather than relying on PHP's default \/ escaping.
+	// wp_add_inline_script() does not escape for us, so the flags stay.
+	$js = 'window.freshetPagesplusPaths=' . wp_json_encode($paths, JSON_HEX_TAG | JSON_HEX_AMP) . ';';
+	$js .= <<<'JS'
 (function(){
   var p = window.freshetPagesplusPaths || {};
   for (var id in p) {
@@ -495,7 +499,10 @@ function freshet_pagesplus_print_paths(): void {
   }
 })();
 JS;
-	echo '</script>';
+
+	// admin_footer runs before admin_print_footer_scripts, so the handle
+	// registered on admin_enqueue_scripts has not printed yet.
+	wp_add_inline_script(FRESHET_PAGESPLUS_HANDLE, $js);
 }
 
 function freshet_pagesplus_parent_filter(string $post_type, string $which): void {
@@ -723,12 +730,27 @@ function freshet_pagesplus_bulk_notice(): void {
 	);
 }
 
-function freshet_pagesplus_styles(): void {
-	echo '<style>
+/**
+ * Register the two src-less handles this plugin's inline CSS and JS attach to,
+ * and add the stylesheet. Only ever reached from the load-edit.php wiring, so
+ * both stay scoped to the list-table screens we enhance.
+ *
+ * The script handle is registered here but filled in the footer: the paths are
+ * only known once the list table has rendered its titles (see
+ * freshet_pagesplus_print_paths). With no inline script attached it prints
+ * nothing at all.
+ */
+function freshet_pagesplus_enqueue_assets(): void {
+	wp_register_style(FRESHET_PAGESPLUS_HANDLE, false, [], FRESHET_PAGESPLUS_VERSION);
+	wp_enqueue_style(FRESHET_PAGESPLUS_HANDLE);
+	wp_add_inline_style(FRESHET_PAGESPLUS_HANDLE, '
 .column-title .freshet-pagesplus-path{display:block;margin:.25em 0 0;font-weight:400;font-size:12px;color:#646970;}
 a.freshet-pagesplus-path{text-decoration:none;}
 a.freshet-pagesplus-path:hover{text-decoration:underline;color:#2271b1;}
 .freshet-pagesplus-sub{color:#646970;}
 .fixed .column-' . esc_attr(FRESHET_PAGESPLUS_COL_MODIFIED) . ',.fixed .column-' . esc_attr(FRESHET_PAGESPLUS_COL_PARENT) . ',.fixed .column-' . esc_attr(FRESHET_PAGESPLUS_COL_TEMPLATE) . '{width:12%;}
-</style>';
+');
+
+	wp_register_script(FRESHET_PAGESPLUS_HANDLE, false, [], FRESHET_PAGESPLUS_VERSION, true);
+	wp_enqueue_script(FRESHET_PAGESPLUS_HANDLE);
 }
