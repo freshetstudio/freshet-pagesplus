@@ -77,15 +77,7 @@ type. There is no settings page.
 
 ## Development
 
-No build step — plain PHP. After cloning, arm the content guard once
-(`core.hooksPath` lives in `.git/config` and so is never cloned):
-
-```bash
-bash .freshet/install-hooks.sh
-```
-
-The same check runs in CI on every push, where it cannot be skipped. See
-`.freshet/README.md`.
+No build step — plain PHP.
 
 ## License
 
