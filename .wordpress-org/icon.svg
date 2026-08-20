@@ -1,0 +1,13 @@
+<!-- Canvas is declared at 512 with a 256 viewBox: qlmanage renders an SVG
+     at most ~1.17x its declared size, so the 128/256 PNG fallbacks are
+     DOWNSCALED from 512 and fill their frame exactly. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256" role="img" aria-label="Freshet Pages Plus">
+  <rect width="256" height="256" rx="52" fill="#0B5132"/>
+  <g transform="translate(56,56) scale(6.0)" fill="none" stroke="#ffffff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 12H3"/>
+    <path d="M16 6H3"/>
+    <path d="M11 18H3"/>
+    <path d="M18 9v6"/>
+    <path d="M21 12h-6"/>
+  </g>
+</svg>
