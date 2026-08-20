@@ -1,2 +1,6 @@
 .vscode
 CLAUDE.md
+
+# Release build output
+/dist/
+/.wporg-svn/
