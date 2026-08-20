@@ -11,6 +11,7 @@
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       freshet-pagesplus
+ * Domain Path:       /languages
  */
 
 defined('ABSPATH') || exit;
@@ -30,6 +31,14 @@ const FRESHET_PAGESPLUS_TEMPLATE_QV  = 'freshet_pagesplus_template';
 // Shared handle for the (src-less) style + script registrations the inline CSS
 // and the path payload hang off. No build step, so there is no file to point at.
 const FRESHET_PAGESPLUS_HANDLE       = 'freshet-pagesplus';
+
+// Translations shipped inside the plugin's own /languages need this call —
+// without a custom path the textdomain registry only looks in WP_LANG_DIR, so
+// wp.org-delivered translations load either way but a bundled .mo never would.
+// On init: nothing here translates earlier.
+add_action('init', function () {
+	load_plugin_textdomain('freshet-pagesplus', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
 
 /**
  * Post types we touch: anything public with an admin UI, minus attachments
@@ -684,7 +693,11 @@ function freshet_pagesplus_duplicate_handler(): void {
 
 	$new_id = freshet_pagesplus_duplicate_post($post_id);
 	if ( is_wp_error($new_id) ) {
-		wp_die(esc_html__('Error duplicating item: ', 'freshet-pagesplus') . esc_html($new_id->get_error_message()));
+		wp_die(esc_html(sprintf(
+			/* translators: %s: the reason the duplicate failed. */
+			__('Could not duplicate this item: %s', 'freshet-pagesplus'),
+			$new_id->get_error_message()
+		)));
 	}
 
 	wp_safe_redirect(admin_url('post.php?action=edit&post=' . $new_id));

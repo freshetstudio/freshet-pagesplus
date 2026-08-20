@@ -1,11 +1,14 @@
 # Freshet Pages Plus
 
-_1.4.0_
+Fixes the WP Admin list-table gripes on larger, deeply-structured sites: a sortable Modified column, the full URL path under every title, a parent filter, slug/path search and one-click Duplicate.
 
-By [Freshet Studio](https://freshet.studio).
+Part of the Freshet plugin suite. MIT.
 
-Fixes the things that make WP Admin list tables (Pages, Posts, and any custom
-post type) painful on larger, deeply-structured sites.
+WordPress list tables have no sortable "Modified" date, never surface the actual
+URL path (so three pages all called "Overview" are indistinguishable), cannot be
+searched by path, and give you no way to filter or sort by parent — let alone
+duplicate a page in one click. This adds all of it, to Pages, Posts and every
+public custom post type, with no settings screen.
 
 ## Features
 
@@ -29,31 +32,25 @@ post type) painful on larger, deeply-structured sites.
   - a **Parent** column showing the parent title (linked to that branch view)
     and sortable **by parent title** (self-join, not parent ID);
   - the branch keeps the **manual (menu) order** intact, not A–Z.
+- **Template column + filter** — the page template each row uses, and a
+  dropdown to filter by it, on post types where the theme registers templates.
 - **Duplicate — single + bulk** — one-click "Duplicate" on every row, plus a
   "Duplicate" bulk action. Clones content, excerpt, parent, menu order,
   taxonomy terms, and post meta into a new **draft** titled "… (Copy)"; the row
   action then opens it in the editor.
 
-## Why this exists
-
-WordPress list tables have no default sortable "Modified" date, never surface
-the actual URL path (so on a big site three pages all called "Overview" are
-indistinguishable), can't be searched by path, and give you no way to filter or
-sort by parent — let alone duplicate a page in one click. This fixes all of
-that.
-
 ## Usage
 
 Activate the plugin. That's it — it applies automatically to every public post
-type. There is no settings page.
+type, and there is no settings page.
 
 - Click the **Modified** or **Parent** column header to sort.
 - Pick a parent from the **All parents** dropdown and hit **Filter** to see
   that page and its whole branch (children, grandchildren, …), nested. Pick
   **Top level only** to list just the root pages.
 - Click a value in the **Parent** column to jump to that parent's branch view.
-- Search a slug or path segment (e.g. `max-your-cool`) to list every page in
-  that branch.
+- Search a slug or path segment (e.g. `about/team`) to list every page in that
+  branch.
 - Select rows and choose **Duplicate** from the Bulk actions menu to clone
   several at once.
 
@@ -72,31 +69,21 @@ type. There is no settings page.
 - Duplicate (single + bulk) shares one clone routine. The row action runs
   through `admin_action_*` with a per-post nonce; both paths check `edit_post`.
 - Attachments are skipped (the media library is a separate screen).
-- Note: cloning copies meta verbatim — it does **not** remap stored post-ID
-  references (e.g. ACF relationship fields) to the new post.
+- Cloning copies meta verbatim — it does **not** remap stored post-ID
+  references (relationship fields and the like) to the new post.
 
-## Development
+## Dev environment
 
-No build step — plain PHP.
+Symlink or copy the plugin into a local WordPress install and activate it:
+
+```bash
+ln -s "$(pwd)" /path/to/wp/wp-content/plugins/freshet-pagesplus
+```
+
+No build step — plain PHP (7.4+), one file.
+
+Lint: `php -l freshet-pagesplus.php`.
 
 ## License
 
-MIT — see `LICENSE`.
-
-## Changelog
-
-- 1.4.0 Added a **Top level only** parent-filter option (root pages, flat).
-- 1.3.0 Parent filter now shows the whole **branch** (the page itself + all
-  descendants, nested) instead of only direct children.
-- 1.2.1 Search now matches the **full path** (own slug + ancestor slugs), so a
-  section search returns the whole branch — not just leaf-slug matches.
-- 1.2.0 Slug/path search, bulk Duplicate, path links to the live page,
-  "by Author" in the Modified column, and Parent sorts by title (not ID).
-- 1.1.0 Path now renders reliably (footer-injected, was escaped by core).
-  Parent filter preserves manual menu order. Added Duplicate row action.
-- 1.0.0 Release.
-
-## Disclaimer
-
-- Built out of personal necessity for managing large WordPress sites.
-- No configuration UI, by design. It either helps you or it doesn't.
+MIT. Part of the [Freshet Studio](https://freshet.studio) plugin suite.
