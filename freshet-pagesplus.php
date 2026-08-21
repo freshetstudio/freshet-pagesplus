@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       Freshet Pages Plus
- * Plugin URI:        https://freshet.studio
  * Description:       Fixes the WP Admin list-table gripes: a sortable "Modified" column (with ID and author), the full URL path under every title, a parent filter + sortable Parent column for hierarchical content, a template column + filter, slug/path search, and one-click + bulk Duplicate.
  * Version:           1.5.0
  * Requires at least: 6.0
