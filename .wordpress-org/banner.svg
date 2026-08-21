@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="772" height="250" viewBox="0 0 772 250" role="img" aria-label="Freshet Pages Plus">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0B5132"/>
-      <stop offset="1" stop-color="#14C46F"/>
+      <stop offset="0" stop-color="#0A1499"/>
+      <stop offset="1" stop-color="#1122ff"/>
     </linearGradient>
   </defs>
   <rect width="772" height="250" fill="url(#bg)"/>
@@ -14,6 +14,6 @@
     <path d="M21 12h-6"/>
   </g>
   <text x="196" y="128" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="57" font-weight="800" fill="#ffffff" letter-spacing="-1">Freshet Pages Plus</text>
-  <text x="198" y="168" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="23" font-weight="500" fill="#8FBFA4">Better admin list tables</text>
-  <text x="198" y="198" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="500" fill="#CFE8DC" letter-spacing="0.5">Modified &#183; Path &#183; Parent &#183; Duplicate</text>
+  <text x="198" y="168" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="23" font-weight="500" fill="#8FA998">Better admin list tables</text>
+  <text x="198" y="198" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="500" fill="#c7cbe8" letter-spacing="0.5">Modified &#183; Path &#183; Parent &#183; Duplicate</text>
 </svg>
